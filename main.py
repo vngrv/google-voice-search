@@ -1,46 +1,17 @@
-import pyaudio
-import wave
-import datetime
+from lib import recorder, eraser, requester
 
-chunk = 1024  # Запись кусками по 1024 сэмпла
-sample_format = pyaudio.paInt16  # 16 бит на выборку
-channels = 1
-rate = 44100  # Запись со скоростью 44100 выборок(samples) в секунду
-seconds = 5
-filename = "output/sound-" + datetime.datetime.now().time() + ".wav"
-p = pyaudio.PyAudio()  # Создать интерфейс для PortAudio
+if __name__ == '__main__':
+    record = recorder.Recorder()
+    request = requester.Requester()
+    erase = eraser.Eraser()
 
-for i in range(p.get_device_count()):
-    print(i, p.get_device_info_by_index(i)['name'])
+    # erase.print_path()
+    # erase.execute()
 
-print('Recording...')
+    iterations = 0
 
-stream = p.open(format=sample_format,
-                channels=channels,
-                rate=rate,
-                frames_per_buffer=chunk,
-                input_device_index=0,  # индекс устройства с которого будет идти запись звука
-                input=True)
+    pass
+    # while iterations < 30:
+    #     record.start_recording().finish_recording().save_sound()
 
-
-frames = []  # Инициализировать массив для хранения кадров
-
-# Хранить данные в блоках в течение 3 секунд
-for i in range(0, int(rate / chunk * seconds)):
-    data = stream.read(chunk)
-    frames.append(data)
-
-# Остановить и закрыть поток
-stream.stop_stream()
-stream.close()
-# Завершить интерфейс PortAudio
-p.terminate()
-
-print('Finished recording!')
-# Сохранить записанные данные в виде файла WAV
-wf = wave.open(filename, 'wb')
-wf.setnchannels(channels)
-wf.setsampwidth(p.get_sample_size(sample_format))
-wf.setframerate(49000)
-wf.writeframes(b''.join(frames))
-wf.close()
+    #     iterations =+ 1
