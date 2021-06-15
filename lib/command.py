@@ -31,6 +31,8 @@ class Command:
             print('Комманда налево')
         elif(self.selected_command == 'направо'):   
             print('Комманда направо')
+        else:
+            print('Комманда не обнаружена')
         
         return self
 
