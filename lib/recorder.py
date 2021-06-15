@@ -1,5 +1,6 @@
 import pyaudio
 import wave
+import speech_recognition as speech_recog
 
 from time import gmtime, strftime
 
@@ -20,17 +21,25 @@ class Recorder:
     frames = []
     input_device_index = 0
     seconds = 5
+    microphone = None
     
-    def __init__(self):
-        self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(
-            format = self.format,
-            rate = self.rate,
-            channels = self.channels,
-            frames_per_buffer = self.frames_per_buffer,
-            input_device_index = 0,
-            input = True
-        )
+    def __init__(self, save_status=False):
+        if(save_status):
+            self.p = pyaudio.PyAudio()
+            self.stream = self.p.open(
+                format = self.format,
+                rate = self.rate,
+                channels = self.channels,
+                frames_per_buffer = self.frames_per_buffer,
+                input_device_index = 0,
+                input = True
+            )
+        else:
+            self.microphone = speech_recog.Microphone()
+            pass
+
+    def get_microphone(self):
+        return self.microphone
 
     def get_devices_dict(self):
         return [{ i: self.p.get_device_info_by_index(i)['name']} for i in range(self.p.get_device_count())]
